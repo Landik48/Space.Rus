@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+:root {
+    --title-size: 40px;
+    --subtitle-size: 25px;
+    --description-size: 20px;
+}
+
+* {
+  scrollbar-width: auto !important;
+  scrollbar-color: #5c9cff transparent !important;
+}
+
+*::-webkit-scrollbar {
+  width: 12px !important;
+  height: 12px !important;
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent !important;
+  border-radius: 20px !important;
+  margin: 4px 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+*::-webkit-scrollbar-track-piece {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #5c9cff 0%, #3a7bd5 100%) !important;
+  border-radius: 20px !important;
+  border: 3px solid transparent !important;
+  background-clip: padding-box !important;
+  transition: all 0.3s ease !important;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #7eb3ff 0%, #5c9cff 100%) !important;
+  background-clip: padding-box !important;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent !important;
+}
+
+body {
+  color: white;
+}
+
+
+@font-face {
+  font-family: 'EXO2';
+  src: url('./assets/fonts/EXO2.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; 
+}
+
+
+@font-face {
+  font-family: 'Gothic';
+  src: url('./assets/fonts/GOTHIC.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; 
+}
+
+@font-face {
+  font-family: 'Gothic';
+  src: url('./assets/fonts/GOTHICB.TTF') format('truetype');
+  font-weight: bold; 
+  font-style: normal;
+  font-display: swap; 
+}
+
+@font-face {
+  font-family: 'Gothic';
+  src: url('./assets/fonts/GOTHICI.TTF') format('truetype');
+  font-weight: normal;
+  font-style: italic; 
+  font-display: swap; 
+}
+
+@font-face {
+  font-family: 'Gothic';
+  src: url('./assets/fonts/GOTHICBI.TTF') format('truetype');
+  font-weight: bold;
+  font-style: italic; 
+  font-display: swap; 
+}
+
+.title {
+    font-family: 'EXO2', sans-serif; 
+    font-size: var(--title-size);
+}
+
+.subtitle {
+    font-family: 'EXO2', sans-serif; 
+    font-size: var(--subtitle-size);
+}
+
+.description {
+    font-family: 'Gothic', sans-serif;
+    font-size: var(--description-size);   
+}
+
+@media (max-width: 690px) {
+    :root {
+        --title-size: 30px;
+        --subtitle-size: 24px;
+        --description-size: 18px;
+    }
+}
+
+@media (max-width: 400px) {
+    :root {
+        --title-size: 25px;
+        --subtitle-size: 20px;
+        --description-size: 16px;
+    }
+}

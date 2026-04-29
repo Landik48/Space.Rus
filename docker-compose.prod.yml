@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: app_postgres_prod
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      POSTGRES_DB: app_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: app_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app_user -d app_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - app_net
+
+  backend:
+    build:
+      context: ./backend
+      target: runner
+    container_name: app_backend_prod
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app_net
+
+  frontend:
+    build:
+      context: ./frontend
+      target: runner
+    container_name: app_frontend_prod
+    restart: unless-stopped
+    networks:
+      - app_net
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: app_caddy_prod
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy/certs:/etc/caddy/certs:ro  
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - app_net
+
+  adminer:
+    image: adminer
+    container_name: app_adminer
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    networks:
+      - app_net
+
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  app_net:
+    driver: bridge

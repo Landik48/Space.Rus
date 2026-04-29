@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  firstname String
+  lastname String
+  password String
+  profile_picture String
+  total_time Int @default(0)
+  testResults TestResult[]
+  progresses  Progress[]
+  userAchievements UserAchievements[]
+  isAdmin Boolean @default(false)
+}
+
+model Articles {
+  id Int @id @default(autoincrement())
+  img_link String
+  title String
+  description String
+  article_link String
+  test Tests?
+}
+
+model Tests {
+  id Int @id @default(autoincrement())
+  name String
+  body Json
+  answers Json @default("[]")
+  article_id Int @unique
+  article Articles @relation(fields: [article_id], references: [id])
+  results TestResult[]
+}
+
+model TestResult {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [user_id], references: [id])
+  user_id Int
+  test Tests @relation(fields: [test_id], references: [id])
+  test_id Int
+  @@unique([user_id, test_id]) 
+}
+
+model Achievements {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  image_link String
+  conditionType String
+  conditionValue Int
+  userAchievements UserAchievements[]
+}
+
+model UserAchievements {
+  id Int @id @default(autoincrement())
+  achievement Achievements @relation(fields: [achievement_id], references: [id])
+  achievement_id Int
+  user User @relation(fields: [user_id], references: [id])
+  user_id Int
+  date DateTime
+  @@unique([user_id, achievement_id])
+}
+
+model Progress {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [user_id], references: [id])
+  user_id Int
+  conditionType String
+  value Int
+  @@unique([user_id, conditionType])
+}
